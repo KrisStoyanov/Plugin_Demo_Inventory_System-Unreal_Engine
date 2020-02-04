@@ -1,12 +1,14 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
 #include "TopDownARPGPlayerController.h"
+#include "Utilities.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Runtime/Engine/Classes/Components/DecalComponent.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Engine/World.h"
-#include "Characters/TopDownARPGCharacter.h"
 #include "TopDownARPG.h"
+#include "Characters/TopDownARPGCharacter.h"
+
 
 
 ATopDownARPGPlayerController::ATopDownARPGPlayerController()
@@ -36,7 +38,35 @@ void ATopDownARPGPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("Ability1", IE_Pressed, this, &ATopDownARPGPlayerController::ActivateAbility1);
 	InputComponent->BindAction("Ability2", IE_Pressed, this, &ATopDownARPGPlayerController::ActivateAbility2);
+	//InputComponent->BindAction("Interact",IE_Pressed,this, &ATopDownARPGPlayerController::ActivateInteract);
 }
+/*
+void ATopDownARPGPlayerController::ActivateInteract()
+{
+	//Super::Tick(DeltaTime);
+	
+	TArray<AActor*> OverlappedActors;
+	//EventHorizon->GetOverlappingActors(OverlappedActors);
+
+	for (auto& CurrentActor : OverlappedActors)
+	{
+		if (CurrentActor != nullptr && CurrentActor != GetOwner())
+		{
+			auto Interface = CurrentActor->Imokemenet
+			if (IsValid(MovementComp) && CurrentActor->GetDistanceTo(this) <= HorizonRadius)
+			{
+				float DistanceToTargetMultiplier = 1 - CurrentActor->GetDistanceTo(this) / HorizonRadius;
+				DistanceToTargetMultiplier *= ForceStrength;
+
+				CurrentActor->SetActorLocation(FMath::VInterpTo(CurrentActor->GetActorLocation(), this->GetActorLocation(), DeltaTime, DistanceToTargetMultiplier));
+				CurrentActor->TakeDamage(DistanceToTargetMultiplier * Damage, FDamageEvent(StaticClass()), nullptr, this);
+
+			}
+		}
+	}
+}
+*/
+
 
 void ATopDownARPGPlayerController::ActivateAbility1()
 {

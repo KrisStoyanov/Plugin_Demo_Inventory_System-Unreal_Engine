@@ -64,7 +64,6 @@ ATopDownARPGCharacter::ATopDownARPGCharacter()
 void ATopDownARPGCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
 	FTopDownARPGCharacterStruct* CharacterStruct = CharacterStatsRow.GetRow<FTopDownARPGCharacterStruct>(TEXT(""));
 
 	if (CharacterStruct == nullptr)
