@@ -38,6 +38,7 @@ protected:
 	void ActivateAbility1();
 	void ActivateAbility2();
 	//void ActivateInteract();
+	//void ActivateInventory();
 };
 
 

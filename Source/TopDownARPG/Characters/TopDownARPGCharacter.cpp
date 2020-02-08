@@ -1,5 +1,5 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
-
+#include "InventoryComponent.h"
 #include "TopDownARPGCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Camera/CameraComponent.h"
@@ -42,6 +42,13 @@ ATopDownARPGCharacter::ATopDownARPGCharacter()
 	TopDownCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	TopDownCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	TopDownCameraComponent->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
+
+	Inventory = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+
+	//OverlapComponent = CreateDefaultSubobject<USphereOfCollision>(TEXT("SphereComp"));
+	//OverlapComponent= CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
+	//OverlapComponent->OnComponentBeginOverlap.AddUniqueDynamic(this, &ATopDownARPGCharacter::Overlapping);
+
 
 	// Create a decal in the world to show the cursor's location
 	CursorToWorld = CreateDefaultSubobject<UDecalComponent>("CursorToWorld");
@@ -121,3 +128,39 @@ void ATopDownARPGCharacter::Death()
 		GameMode->EndGame(false);
 	}
 }
+
+bool ATopDownARPGCharacter::ActivateInteract()
+{
+	UWorld* World = GetWorld();
+	if (IsValid(World) == false)
+	{
+		UE_LOG(LogTopDownARPG, Error, TEXT("UBoltAbility::Activate IsValid(World) == false"));
+	}
+
+	AActor* Ownerr = Cast<AActor>(GetOuter());
+	if (IsValid(Ownerr) == false)
+	{
+		UE_LOG(LogTopDownARPG, Error, TEXT("UAbility::Activate IsValid(Owner) == false"));
+		return false;
+	}
+	
+
+	FActorSpawnParameters SpawnParameters;
+	SpawnParameters.Owner = Ownerr;
+	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FVector Direction;
+	Direction.Z = 0.0f;
+	Direction.X = 0.0f;
+	Direction.Y = 0.0f;
+	Direction.Normalize();
+
+	FVector SpawnLocation = Ownerr->GetActorLocation() + Direction * 100.0f;
+	AActor* Sphere = World->SpawnActor<AActor>(SC, SpawnLocation,	Direction.Rotation(), SpawnParameters);
+	if (IsValid(Sphere) == false)
+	{
+		UE_LOG(LogTopDownARPG, Error, TEXT("UBoltAbility::Activate IsValid(Projectile) == false"));
+		return false;
+	}
+	return true;
+}
+

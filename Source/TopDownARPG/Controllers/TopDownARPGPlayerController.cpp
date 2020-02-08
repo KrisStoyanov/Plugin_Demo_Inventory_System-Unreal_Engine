@@ -1,5 +1,6 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
+#include "Widget.h"
 #include "TopDownARPGPlayerController.h"
 #include "Utilities.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
@@ -38,36 +39,21 @@ void ATopDownARPGPlayerController::SetupInputComponent()
 
 	InputComponent->BindAction("Ability1", IE_Pressed, this, &ATopDownARPGPlayerController::ActivateAbility1);
 	InputComponent->BindAction("Ability2", IE_Pressed, this, &ATopDownARPGPlayerController::ActivateAbility2);
-	//InputComponent->BindAction("Interact",IE_Pressed,this, &ATopDownARPGPlayerController::ActivateInteract);
+	//InputComponent->BindAction("Interact", IE_Pressed, this, &ATopDownARPGPlayerController::ActivateInteract);
+	//InputComponent->BindAction("Inventory",IE_Pressed,this, &ATopDownARPGPlayerController::ActivateInventory);
 }
-/*
-void ATopDownARPGPlayerController::ActivateInteract()
+
+/*void ATopDownARPGPlayerController::ActivateInteract()
 {
-	//Super::Tick(DeltaTime);
-	
-	TArray<AActor*> OverlappedActors;
-	//EventHorizon->GetOverlappingActors(OverlappedActors);
-
-	for (auto& CurrentActor : OverlappedActors)
+	ATopDownARPGCharacter* PlayerCharacter = Cast<ATopDownARPGCharacter>(GetPawn());
+	if (IsValid(PlayerCharacter) == false)
 	{
-		if (CurrentActor != nullptr && CurrentActor != GetOwner())
-		{
-			auto Interface = CurrentActor->Imokemenet
-			if (IsValid(MovementComp) && CurrentActor->GetDistanceTo(this) <= HorizonRadius)
-			{
-				float DistanceToTargetMultiplier = 1 - CurrentActor->GetDistanceTo(this) / HorizonRadius;
-				DistanceToTargetMultiplier *= ForceStrength;
-
-				CurrentActor->SetActorLocation(FMath::VInterpTo(CurrentActor->GetActorLocation(), this->GetActorLocation(), DeltaTime, DistanceToTargetMultiplier));
-				CurrentActor->TakeDamage(DistanceToTargetMultiplier * Damage, FDamageEvent(StaticClass()), nullptr, this);
-
-			}
-		}
+		UE_LOG(LogTopDownARPG, Error, TEXT("ATopDownARPGPlayerController::ActivateInteract IsValid(PlayerCharacter) == false"));
+		return;
 	}
+	PlayerCharacter->ActivateInteract();
 }
 */
-
-
 void ATopDownARPGPlayerController::ActivateAbility1()
 {
 	ATopDownARPGCharacter* PlayerCharacter = Cast<ATopDownARPGCharacter>(GetPawn());
@@ -88,6 +74,7 @@ void ATopDownARPGPlayerController::ActivateAbility1()
 			Ability->Activate(Hit.ImpactPoint);
 		}
 	}
+
 }
 
 void ATopDownARPGPlayerController::ActivateAbility2()

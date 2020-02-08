@@ -33,5 +33,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FDataTableRowHandle CharacterInventory;
 
-		
+	//UFUNCTION()
+	//void TogleInventory();
+
 };
